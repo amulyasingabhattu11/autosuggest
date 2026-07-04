@@ -41,6 +41,11 @@
             margin-left: 29%;
 
         }
+         #suggestion-item{
+            border: 1px solid gray;
+            padding: 10px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -52,14 +57,42 @@
    
     <h1><span class="colour-txt">Being</span>Infinity</h1>
     <p class="tag-line">One million phrases.Four algorithms.Prefix Based Auto Suggest</p>
-    <!-- <span> -->
-    <span><span class="search-icon">🔍︎</span> <input placeholder="Start typing to search" class="search-box"></span>
-     <!-- <input placeholder="🔍︎ Start typing to search" id="search-input"> -->
+    
+    <span><span class="search-icon">🔍︎</span> <input placeholder="Start typing to search" class="search-box" id="search-box"></span>
+    
     <div id="suggestion-box">
-        Suggestions Box
+        <!-- Suggestions Box -->
     </div>
     </div>
-    </body>
-    <!-- </span> -->
+   <script>
+     var searchBox=document.getElementById("search-box");
+     var suggestionBox=document.getElementById("suggestion-box");
+     searchBox.addEventListener("input",function(){
+       //1.Get user typed text
+       //2.Make api calll to get suggestion
+       //3.Display data in HTML
+       var userInput=searchBox.value;
+       if(userInput.trim()==""){
+
+       }
+       else{
+        var url=" https://autosuggest-backend.onrender.com/api/autosuggest?q=" + userInput + "&algorithm=brute&limit=10&weighted=false";
+        fetch(url)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+            var resultArray=data.results;
+            var htmlResults="";
+            for(var i=0;i<resultArray.length;i++){
+                htmlResults+="<div id='suggestion-item'>"+resultArray[i].text+"</div>";
+            }
+            suggestionBox.innerHTML=htmlResults;
+        })
+       }
+     });
+   </script>
+    
 </body>
 </html>
